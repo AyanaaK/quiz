@@ -12,6 +12,7 @@ class Quiz extends StatefulWidget {
 }
 
 class _QuizState extends State<Quiz> {
+  List<String> selectedAnswers = [];
   var activeScreen = 'start-screen';
 
   void switchToQuestionsScreen() {
@@ -20,20 +21,18 @@ class _QuizState extends State<Quiz> {
     });
   }
 
-  void showResultsScreen() {
-    setState(() {
-      activeScreen = 'results-screen'; // New results screen
-    });
+  void chooseAnswer(String answer){
+    selectedAnswers.add(answer);
   }
 
   @override
   Widget build(BuildContext context) {
-    Widget screenWidget;
+    Widget screenWidget = StartScreen(switchToQuestionsScreen);
 
     if (activeScreen == 'start-screen') {
       screenWidget = StartScreen(switchToQuestionsScreen);
     } else if (activeScreen == 'questions-screen') {
-      screenWidget = QuestionsScreen(onQuizComplete: showResultsScreen);
+      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
     } else {
       screenWidget = const Center(
         child: Text(
