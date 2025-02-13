@@ -5,9 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 
 
 class QuestionsScreen extends StatefulWidget {
-  final void Function() onQuizComplete; // Callback for when the quiz finishes
+  const QuestionsScreen({
+    super.key,
+    required this.onSelectAnswer,
+  });
 
-  const QuestionsScreen({super.key, required this.onQuizComplete});
+  final void Function(String answer) onSelectAnswer;
 
   @override
   State<QuestionsScreen> createState() {
@@ -18,14 +21,11 @@ class QuestionsScreen extends StatefulWidget {
 class _QuestionsScreenState extends State<QuestionsScreen> {
   var currentQuestionIndex = 0;
 
-  void answerQuestion() {
-    setState(() {
-      if (currentQuestionIndex < questions.length - 1) {
+  void answerQuestion(String onSelectAnswer) {
+      widget.onSelectAnswer('...');
+      setState(() {
         currentQuestionIndex++;
-      } else {
-        widget.onQuizComplete(); // Call the callback when quiz finishes
-      }
-    });
+      });
   }
 
   @override
@@ -51,11 +51,13 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
             const SizedBox(height: 30), // Space between question and answers
             // Add more space between each answer option
             ...currentQuestion.getShuffledAnswers().map((answer) {
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 20), // Add space between answer buttons
-                child: AnswerButton(answerText: answer, onTap: answerQuestion),
+              return AnswerButton(
+                answerText: answer,
+                onTap:(){
+                  answerQuestion(answer);
+                },
               );
-            }).toList(),
+            })
           ],
         ),
       ),
