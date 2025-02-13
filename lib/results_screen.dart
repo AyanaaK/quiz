@@ -2,16 +2,18 @@ import 'package:flutter/material.dart';
 import 'questions.dart';
 import 'questions_summary.dart';
 
-class ResultsScreen extends StatelessWidget{
+class ResultsScreen extends StatelessWidget {
   const ResultsScreen({
     super.key,
     required this.chosenAnswers,
+    required this.onRestart,
   });
 
   final List<String> chosenAnswers;
+  final void Function() onRestart;
 
   List<Map<String, Object>> getSummaryData() {
-    final List<Map<String, Object>> summary = []
+    final List<Map<String, Object>> summary = [];
 
     for (var i = 0; i < chosenAnswers.length; i++) {
       summary.add({
@@ -25,9 +27,14 @@ class ResultsScreen extends StatelessWidget{
     return summary;
   }
 
-
   @override
-  Widget build(BuildContext context){
+  Widget build(BuildContext context) {
+    final summaryData = getSummaryData();
+    final numTotalQuestions = questions.length;
+    final numCorrectQuestions = summaryData.where(
+          (data) => data['user_answer'] == data['correct_answer'],
+    ).length;
+
     return SizedBox(
       width: double.infinity,
       child: Container(
@@ -35,16 +42,17 @@ class ResultsScreen extends StatelessWidget{
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text('You answered X out of Y questions correctly'),
-            const SizedBox(
-              height: 30,
+            Text(
+              'You answered $numCorrectQuestions out of $numTotalQuestions questions correctly',
+              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              textAlign: TextAlign.center,
             ),
-            QuestionsSummary(getSummaryData()),
-            const SizedBox(
-              height: 30,
-            ),
-            TextButton(onPressed: (){},
-                      child: const Text('Restart Quiz')
+            const SizedBox(height: 30),
+            QuestionsSummary(summaryData),
+            const SizedBox(height: 30),
+            TextButton(
+              onPressed: onRestart,
+              child: const Text('Restart Quiz'),
             ),
           ],
         ),

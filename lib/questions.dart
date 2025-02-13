@@ -3,12 +3,7 @@ import 'quiz_questions.dart';
 const List<QuizQuestion> questions = [
   QuizQuestion(
     'What are the main building blocks of Flutter UIs?',
-    [
-      'Widgets',
-      'Components',
-      'Blocks',
-      'Functions',
-    ],
+    ['Widgets', 'Components', 'Blocks', 'Functions'],
   ),
   QuizQuestion(
     'How are Flutter UIs built?',
@@ -20,4 +15,3 @@ const List<QuizQuestion> questions = [
     ],
   ),
 ];
-

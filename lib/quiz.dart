@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:quiz/results_screen.dart';
-import 'package:quiz/start_screen.dart';
-import 'package:quiz/questions_screen.dart';
-import 'package:quiz/questions.dart';
-
+import 'results_screen.dart';
+import 'start_screen.dart';
+import 'questions_screen.dart';
+import 'questions.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -24,28 +23,33 @@ class _QuizState extends State<Quiz> {
     });
   }
 
-  void chooseAnswer(String answer){
+  void chooseAnswer(String answer) {
     selectedAnswers.add(answer);
 
-    if(selectedAnswers.length == questions.length){
+    if (selectedAnswers.length == questions.length) {
       setState(() {
-        //selectedAnswers = [];
         activeScreen = 'results-screen';
       });
     }
+  }
+
+  void restartQuiz() {
+    setState(() {
+      selectedAnswers = [];
+      activeScreen = 'questions-screen';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     Widget screenWidget = StartScreen(switchToQuestionsScreen);
 
-    if(activeScreen == 'questions-screen'){
-      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer,);
-    }
-
-    if(activeScreen == 'results-screen'){
+    if (activeScreen == 'questions-screen') {
+      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
+    } else if (activeScreen == 'results-screen') {
       screenWidget = ResultsScreen(
         chosenAnswers: selectedAnswers,
+        onRestart: restartQuiz, // Passing restart function
       );
     }
 
@@ -62,7 +66,7 @@ class _QuizState extends State<Quiz> {
               end: Alignment.bottomRight,
             ),
           ),
-          child: screenWidget, // Dynamically show the correct screen
+          child: screenWidget,
         ),
       ),
     );

@@ -1,31 +1,25 @@
 import 'package:flutter/material.dart';
-import 'package:quiz/answer_button.dart';
-import 'package:quiz/questions.dart';
 import 'package:google_fonts/google_fonts.dart';
-
+import 'answer_button.dart';
+import 'questions.dart';
 
 class QuestionsScreen extends StatefulWidget {
-  const QuestionsScreen({
-    super.key,
-    required this.onSelectAnswer,
-  });
+  const QuestionsScreen({super.key, required this.onSelectAnswer});
 
   final void Function(String answer) onSelectAnswer;
 
   @override
-  State<QuestionsScreen> createState() {
-    return _QuestionsScreenState();
-  }
+  State<QuestionsScreen> createState() => _QuestionsScreenState();
 }
 
 class _QuestionsScreenState extends State<QuestionsScreen> {
   var currentQuestionIndex = 0;
 
-  void answerQuestion(String onSelectAnswer) {
-      widget.onSelectAnswer('...');
-      setState(() {
-        currentQuestionIndex++;
-      });
+  void answerQuestion(String answer) {
+    widget.onSelectAnswer(answer);
+    setState(() {
+      currentQuestionIndex++;
+    });
   }
 
   @override
@@ -48,12 +42,11 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
               ),
               textAlign: TextAlign.center,
             ),
-            const SizedBox(height: 30), // Space between question and answers
-            // Add more space between each answer option
+            const SizedBox(height: 30),
             ...currentQuestion.getShuffledAnswers().map((answer) {
               return AnswerButton(
                 answerText: answer,
-                onTap:(){
+                onTap: () {
                   answerQuestion(answer);
                 },
               );
@@ -63,6 +56,4 @@ class _QuestionsScreenState extends State<QuestionsScreen> {
       ),
     );
   }
-
 }
-
