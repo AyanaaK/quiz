@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:quiz/start_screen.dart';
 import 'package:quiz/questions_screen.dart';
+import 'package:quiz/questions.dart';
 
 class Quiz extends StatefulWidget {
   const Quiz({super.key});
@@ -29,17 +30,8 @@ class _QuizState extends State<Quiz> {
   Widget build(BuildContext context) {
     Widget screenWidget = StartScreen(switchToQuestionsScreen);
 
-    if (activeScreen == 'start-screen') {
-      screenWidget = StartScreen(switchToQuestionsScreen);
-    } else if (activeScreen == 'questions-screen') {
-      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer);
-    } else {
-      screenWidget = const Center(
-        child: Text(
-          'Quiz Finished! 🎉',
-          style: TextStyle(fontSize: 24, color: Colors.white),
-        ),
-      );
+    if(activeScreen == 'questions-screen'){
+      screenWidget = QuestionsScreen(onSelectAnswer: chooseAnswer,);
     }
 
     return MaterialApp(
